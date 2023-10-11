@@ -1,0 +1,7 @@
+App ID: 406264
+
+Client ID: Iv1.7c072ec6d6d9bc50
+
+secret: 7118de977f43e84865ea7e41949f68257b72899e
+
+http://localhost:8080//session/githubcallback

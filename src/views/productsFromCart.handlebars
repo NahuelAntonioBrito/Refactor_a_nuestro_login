@@ -1,0 +1,26 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>Titulo</td>
+            <td>Descripción</td>
+            <td>Precio</td>
+            <td>Codigo</td>
+            <td>Categoría</td>
+            <td>Stock</td>
+            <td>Cantidad</td>
+        </tr>
+    </thead>
+    <tbody>
+    {{#each cart.products}}
+        <tr>
+            <td>{{ this.product.title }}</td>
+            <td>{{ this.product.description }}</td>
+            <td>{{ this.product.price }}</td>
+            <td>{{ this.product.code }}</td>
+            <td>{{ this.product.category }}</td>
+            <td>{{ this.product.stock }}</td>
+            <td {{ this.product.quantity }}></td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

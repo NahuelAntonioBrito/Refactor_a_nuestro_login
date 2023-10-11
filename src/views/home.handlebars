@@ -1,0 +1,75 @@
+<div>
+
+    <h1>Bienvenido, {{user.firstName}} {{user.lastName}}</h1>
+
+    <section>
+        <a href="/profile">{{user.email}}</a>
+        <a href="/api/sessions/logout">LOGOUT</a>
+    </section>
+
+    <h2>Products</h2>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {{#if paginateInfo.hasPrevPage}}
+                <li class="page-item">
+                    <a class="page-link" href="{{paginateInfo.prevLink}}">Previous</a>
+                </li>
+            {{/if}}
+            {{#each paginateInfo.totalPages}}
+                <li class="page-item">
+                    <a class="page-link" href="{{this.link}}">{{this.page}}</a>
+                </li>
+            {{/each}}
+            <li class="page-item">
+                <a class="page-link" href="{{paginateInfo.nextLink}}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+    <table class="table table-hover">
+        <tr>
+            <td></td>
+            <td>Titulo</td>
+            <td>Descripción</td>
+            <td>Precio</td>
+            <td>Codigo</td>
+            <td>Categoría</td>
+            <td>Stock</td>
+        </tr>
+        {{#each products}}
+        <tr>
+            <td><button type="button" class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Añadir</button></td>
+            <td>{{ this.title }}</td>
+            <td>{{ this.description }}</td>
+            <td>{{ this.price }}</td>
+            <td>{{ this.code }}</td>
+            <td>{{ this.category }}</td>
+            <td>{{ this.stock }}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+
+<script>
+    addProductToCart = (pid) =>{
+
+        console.log(pid)
+        fetch(`/api/cart`, {
+            method: 'post'
+        })
+            .then( result => result.json())
+            .then( result => {
+                if ( result.status === 'error') throw new Error(result.error)
+                return result.payload._id
+            })
+            .then(cid => {
+                console.log(cid)
+                fetch(`/api/cart/${cid}/product/${pid}`, {
+                    method: 'post'
+                })
+            })
+            .then(alert("producto agregado"))
+            .catch(err => console.log(err.message))
+        }
+</script>
