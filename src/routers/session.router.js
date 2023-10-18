@@ -9,16 +9,24 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/s
 router.get('/failRegister', (req, res) => res.send({ error: 'Passport register Failed'}))
 
 router.post('/login', passport.authenticate('login', {failureRedirect: '/session/failLogin'}), async(req, res) => {
-    if(!user){
+    if(!req.user){
         return res.status(400).send({ status:'error', error:'Invalid credentials'})
     }
     
+    if(req.user.email === 'adminCoder@coder.com'){
+        req.session.role = 'admin';
+    } else {
+        req.session.role = 'user';
+    }
+
     req.session.user = {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         email: req.user.email,
-        age: req.user.age
+        age: req.user.age,
+        role: req.session.role
     }
+
     res.redirect('/products')
 })
 

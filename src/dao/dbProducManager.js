@@ -24,42 +24,29 @@ export const getProducts = async ( req, res ) =>{
         let prevLink;
 
         if (result.hasPrevPage) {
+
             const pageParam = `page=${result.prevPage}`;
-            if (prevPageBaseURL.includes('page=')) {
-                // La URL ya contiene un parámetro "page", reemplaza el valor existente
-                prevLink = prevPageBaseURL.replace(/page=\d+/, pageParam);
+            if (prevPageBaseURL.includes('?')) {
+                prevLink = `${prevPageBaseURL}&${pageParam}`;
             } else {
-                // Agrega el parámetro "page" a la URL
-                if (prevPageBaseURL.includes('?')) {
-                    prevLink = `${prevPageBaseURL}&${pageParam}`;
-                } else {
-                    prevLink = `${prevPageBaseURL}?${pageParam}`;
-                }
+                prevLink = `${prevPageBaseURL}?${pageParam}`;
             }
         } else {
-            prevLink = prevPageBaseURL;
+            prevLink = null; // No hay página anterior
         }
 
         //nextLink
-
         let nextPageBaseURL = `http://${req.hostname}:${PORT}${req.originalUrl}`;
         let nextLink;
-        
         if (result.hasNextPage) {
             const pageParam = `page=${result.nextPage}`;
-            if (nextPageBaseURL.includes('page=')) {
-                // La URL ya contiene un parámetro "page", reemplaza el valor existente
-                nextLink = nextPageBaseURL.replace(/page=\d+/, pageParam);
+            if (nextPageBaseURL.includes('?')) {
+                nextLink = `${nextPageBaseURL}&${pageParam}`;
             } else {
-                // Agrega el parámetro "page" a la URL
-                if (nextPageBaseURL.includes('?')) {
-                    nextLink = `${nextPageBaseURL}&${pageParam}`;
-                } else {
-                    nextLink = `${nextPageBaseURL}?${pageParam}`;
-                }
+                nextLink = `${nextPageBaseURL}?${pageParam}`;
             }
         } else {
-            nextLink = nextPageBaseURL;
+            nextLink = null; // No hay página siguiente
         }
 
         return {
@@ -83,3 +70,11 @@ export const getProducts = async ( req, res ) =>{
         console.log(err.message)
     }
 }
+
+
+
+
+
+
+
+
